@@ -30,17 +30,18 @@ def jsonp2json(jsonp: str):
 
 
 class TaobaoSpider():
-    def __init__(self, live_id):
+    def __init__(self, live_id=None, topic=None):
+        assert live_id or topic
         self.live_id = live_id
         self.tk, self.tk_enc, self.token = self.make_token()
-        log.success(
+        log.info(
             """
             tk         {}
             tk_enc     {}"
             token      {}
             """.format(self.tk, self.tk_enc, self.token)
         )
-        self.__topic = None
+        self.__topic = topic
         self.q = queue.Queue()
         self.cache = []
         self.delay = 1
@@ -62,7 +63,11 @@ class TaobaoSpider():
         if self.__topic:
             return self.__topic
         self.__topic = self.crawl_topic(self.live_id)
-        log.success(f"已获取到topic {self.__topic}")
+        log.info(
+            """
+            已获取到topic   {}
+            """.format(self.__topic)
+        )
         return self.__topic
 
     def bind_topic(self, value):
@@ -166,8 +171,7 @@ class TaobaoSpider():
 
 def test():
     import threading
-    s = TaobaoSpider("502923558674")
-    s.bind_topic("99b740b8-460a-413a-a8bb-db0b2baedd66")
+    s = TaobaoSpider(topic="33d4ffc1-30ac-4f1e-adfb-003b433349b1")
     t = threading.Thread(target=s.listen)
     t.daemon = True
     t.start()
@@ -179,15 +183,4 @@ def test():
 
 
 if __name__ == '__main__':
-    # 胡可
-    # live_id = "501743316235"
-    # s = TaobaoSpider(live_id)
-    # s.bind_topic("2b95ce32-e038-4fac-85f2-9ec2fd8f49bc")
-    # s.crawl_barrages()
-
-    # 其它
-    # s = TaobaoSpider("502783187749")
-    # print(s.topic)
-    # s.crawl_barrages()
-
     test()

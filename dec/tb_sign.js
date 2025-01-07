@@ -87,7 +87,6 @@ appKey = "34675810"
 data = '{"liveId":"501392276439","productType":"live","liveSource":"source_pc_live","entryLiveSource":"source_pc_live","useLiveFandom":false}'
 
 
-
 sign = gen_sign(token, ts, appKey, data)
 console.log(sign)
 
