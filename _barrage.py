@@ -1,8 +1,7 @@
 import requests
 
 from dec.calljs import gen_sign
-from tools import show_barr, make_token
-
+from tools import show_barr, make_token, jsonp2json
 
 tk, tk_enc, token = make_token()
 
@@ -37,3 +36,6 @@ params = {
 }
 response = requests.get(url, headers=headers, cookies=cookies, params=params)
 show_barr(response.text)
+jsonData = jsonp2json(response.text)
+paginationContext = jsonData["data"]["paginationContext"]
+print(paginationContext)
